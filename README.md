@@ -34,16 +34,20 @@ Records race telemetry and results from Automobilista 2's shared memory.
 - F1 2024 points calculation (25-18-15-12-10-8-6-4-2-1)
 - SQLite database persistence
 
-**Building:**
+**Building on Windows:**
 ```bash
 cd recorder
-bash build.sh
+build.bat
 ```
+
+The executable will be at: `../build/bin/Release/ams2_recorder.exe`
 
 **Running:**
 1. Start Automobilista 2
-2. Enable Shared Memory (Project CARS 2 mode)
-3. Run: `../build/bin/ams2_recorder`
+2. Enable Shared Memory in settings (Project CARS 2 mode)
+3. Run: `..\build\bin\Release\ams2_recorder.exe`
+
+See [WINDOWS_BUILD.md](WINDOWS_BUILD.md) for detailed instructions.
 
 ### 2. Web Server (Python)
 
@@ -56,16 +60,16 @@ Flask-based web interface to view race results and driver statistics.
 - RESTful API endpoints
 - Responsive design
 
-**Setup:**
+**Setup on Windows:**
 ```bash
 cd server
-bash setup.sh
+setup.bat
 ```
 
-**Running:**
+**Running on Windows:**
 ```bash
 cd server
-bash run.sh
+run.bat
 ```
 
 Access the web server at `http://localhost:5000`
@@ -103,26 +107,48 @@ Access the web server at `http://localhost:5000`
 ## Requirements
 
 ### Recorder (C++)
-- Windows (AMS2 shared memory Windows-only)
+- **Windows 10/11** (AMS2 shared memory is Windows-only)
 - CMake 3.15+
+- Visual Studio 2022 (with C++ tools)
 - SQLite3 development libraries
 - C++17 compiler
+
+See [WINDOWS_BUILD.md](WINDOWS_BUILD.md) for detailed Windows setup instructions.
 
 ### Server (Python)
 - Python 3.7+
 - Flask 2.3+
 - CORS support
 
+## Quick Start (Windows)
+
+1. Install prerequisites (see [WINDOWS_BUILD.md](WINDOWS_BUILD.md))
+2. Run build script:
+   ```bash
+   build_all.bat
+   ```
+3. Start the recorder:
+   ```bash
+   cd recorder
+   ..\build\bin\Release\ams2_recorder.exe
+   ```
+4. In another terminal, start the web server:
+   ```bash
+   cd server
+   run.bat
+   ```
+5. Open http://localhost:5000
+
 ## Workflow
 
 1. **During Race:**
    - Start AMS2 with shared memory enabled
-   - Run the race recorder
+   - Run the race recorder (.exe)
    - Recorder captures telemetry and stores to database
 
 2. **After Racing:**
-   - Start the web server
-   - View results through web interface
+   - Start the web server (run.bat)
+   - View results through web interface at http://localhost:5000
    - Analyze driver stats and standings
 
 ## Notes
