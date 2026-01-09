@@ -24,7 +24,7 @@ def client():
     # Mock the database path
     import app as app_module
     original_db_path = app_module.DB_PATH
-    app_module.DB_PATH = Path(temp_db_path)
+    app_module.set_db_path(temp_db_path)
     
     # Initialize database with test data
     _init_test_database(temp_db_path)
@@ -33,7 +33,7 @@ def client():
         yield client
     
     # Cleanup
-    app_module.DB_PATH = original_db_path
+    app_module.set_db_path(original_db_path)
     if os.path.exists(temp_db_path):
         os.unlink(temp_db_path)
 

@@ -5,6 +5,7 @@
 # Parse command line arguments
 PORT=5000
 HOST="0.0.0.0"
+DATABASE=""
 DEBUG=""
 
 while [[ $# -gt 0 ]]; do
@@ -17,6 +18,10 @@ while [[ $# -gt 0 ]]; do
             HOST="$2"
             shift 2
             ;;
+        -db|--database)
+            DATABASE="--database $2"
+            shift 2
+            ;;
         --debug)
             DEBUG="--debug"
             shift
@@ -25,15 +30,17 @@ while [[ $# -gt 0 ]]; do
             echo "Usage: run.sh [OPTIONS]"
             echo ""
             echo "Options:"
-            echo "  -p, --port PORT    Port to run server on (default: 5000)"
-            echo "  --host HOST        Host address to bind to (default: 0.0.0.0)"
-            echo "  --debug            Run in debug mode"
-            echo "  -h, --help         Show this help message"
+            echo "  -p, --port PORT        Port to run server on (default: 5000)"
+            echo "  --host HOST            Host address to bind to (default: 0.0.0.0)"
+            echo "  -db, --database FILE   Database file path"
+            echo "  --debug                Run in debug mode"
+            echo "  -h, --help             Show this help message"
             echo ""
             echo "Examples:"
-            echo "  ./run.sh                    # Run on port 5000"
-            echo "  ./run.sh --port 8000        # Run on port 8000"
-            echo "  ./run.sh -p 3000 --debug    # Run on port 3000 with debug"
+            echo "  ./run.sh                               # Run on port 5000"
+            echo "  ./run.sh --port 8000                   # Run on port 8000"
+            echo "  ./run.sh -db sample_races.db           # Use sample database"
+            echo "  ./run.sh -p 3000 -db races.db --debug  # Custom DB and debug"
             exit 0
             ;;
         *)
@@ -54,4 +61,4 @@ source venv/bin/activate
 
 # Run the Flask app
 echo ""
-python3 app.py --port "$PORT" --host "$HOST" $DEBUG
+python3 app.py --port "$PORT" --host "$HOST" $DATABASE $DEBUG

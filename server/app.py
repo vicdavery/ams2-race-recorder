@@ -16,8 +16,14 @@ from flask_cors import CORS
 app = Flask(__name__)
 CORS(app)
 
-# Database path - look for ams2_races.db in parent directory
+# Database path - will be set by main() or use default
 DB_PATH = Path(__file__).parent.parent / 'ams2_races.db'
+
+
+def set_db_path(path):
+    """Set the database path (used for testing and custom databases)"""
+    global DB_PATH
+    DB_PATH = Path(path)
 
 
 def get_db_connection():
@@ -341,10 +347,11 @@ def main():
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog='''
 Examples:
-  python app.py                    # Run on default port 5000
-  python app.py --port 8000        # Run on port 8000
-  python app.py -p 3000            # Run on port 3000
-  python app.py --host 127.0.0.1   # Listen only on localhost
+  python app.py                              # Run on default port 5000
+  python app.py --port 8000                  # Run on port 8000
+  python app.py -p 3000 --database races.db  # Custom database
+  python app.py -db sample_races.db           # Use sample database
+  python app.py --host 127.0.0.1 --debug     # Dev mode
         '''
     )
     
@@ -363,12 +370,28 @@ Examples:
     )
     
     parser.add_argument(
+        '-db', '--database',
+        type=str,
+        default=None,
+        help='Path to database file (default: ../ams2_races.db)'
+    )
+    
+    parser.add_argument(
         '--debug',
         action='store_true',
         help='Run in debug mode'
     )
     
     args = parser.parse_args()
+    
+    # Set database path if provided
+    if args.database:
+        set_db_path(args.database)
+    elif not DB_PATH.exists():
+        # Check parent directory as fallback
+        parent_db = Path(__file__).parent.parent / 'ams2_races.db'
+        if parent_db.exists():
+            set_db_path(parent_db)
     
     print(f"Database path: {DB_PATH}")
     print(f"Database exists: {DB_PATH.exists()}")

@@ -6,6 +6,7 @@ setlocal enabledelayedexpansion
 REM Default values
 set PORT=5000
 set HOST=0.0.0.0
+set DATABASE=
 set DEBUG=
 
 REM Parse command line arguments
@@ -29,6 +30,18 @@ if "%1"=="--host" (
     shift
     goto parse_args
 )
+if "%1"=="-db" (
+    set DATABASE=--database %2
+    shift
+    shift
+    goto parse_args
+)
+if "%1"=="--database" (
+    set DATABASE=--database %2
+    shift
+    shift
+    goto parse_args
+)
 if "%1"=="--debug" (
     set DEBUG=--debug
     shift
@@ -48,15 +61,17 @@ exit /b 1
 echo Usage: run.bat [OPTIONS]
 echo.
 echo Options:
-echo   -p, --port PORT    Port to run server on (default: 5000)
-echo   --host HOST        Host address to bind to (default: 0.0.0.0)
-echo   --debug            Run in debug mode
-echo   -h, --help         Show this help message
+echo   -p, --port PORT        Port to run server on (default: 5000)
+echo   --host HOST            Host address to bind to (default: 0.0.0.0)
+echo   -db, --database FILE   Database file path
+echo   --debug                Run in debug mode
+echo   -h, --help             Show this help message
 echo.
 echo Examples:
-echo   run.bat                        REM Run on port 5000
-echo   run.bat --port 8000            REM Run on port 8000
-echo   run.bat -p 3000 --debug        REM Run on port 3000 with debug
+echo   run.bat                                  REM Run on port 5000
+echo   run.bat --port 8000                      REM Run on port 8000
+echo   run.bat -db sample_races.db              REM Use sample database
+echo   run.bat -p 3000 -db races.db --debug     REM Custom DB and debug
 pause
 exit /b 0
 
@@ -72,6 +87,6 @@ call venv\Scripts\activate.bat
 
 REM Run the Flask app
 echo.
-python app.py --port %PORT% --host %HOST% %DEBUG%
+python app.py --port %PORT% --host %HOST% %DATABASE% %DEBUG%
 
 pause
