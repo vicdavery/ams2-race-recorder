@@ -2,6 +2,48 @@
 
 # Run script for AMS2 Race Results Web Server
 
+# Parse command line arguments
+PORT=5000
+HOST="0.0.0.0"
+DEBUG=""
+
+while [[ $# -gt 0 ]]; do
+    case $1 in
+        -p|--port)
+            PORT="$2"
+            shift 2
+            ;;
+        --host)
+            HOST="$2"
+            shift 2
+            ;;
+        --debug)
+            DEBUG="--debug"
+            shift
+            ;;
+        -h|--help)
+            echo "Usage: run.sh [OPTIONS]"
+            echo ""
+            echo "Options:"
+            echo "  -p, --port PORT    Port to run server on (default: 5000)"
+            echo "  --host HOST        Host address to bind to (default: 0.0.0.0)"
+            echo "  --debug            Run in debug mode"
+            echo "  -h, --help         Show this help message"
+            echo ""
+            echo "Examples:"
+            echo "  ./run.sh                    # Run on port 5000"
+            echo "  ./run.sh --port 8000        # Run on port 8000"
+            echo "  ./run.sh -p 3000 --debug    # Run on port 3000 with debug"
+            exit 0
+            ;;
+        *)
+            echo "Unknown option: $1"
+            echo "Use --help for usage information"
+            exit 1
+            ;;
+    esac
+done
+
 # Activate virtual environment
 if [ ! -d "venv" ]; then
     echo "Virtual environment not found. Running setup.sh first..."
@@ -11,8 +53,5 @@ fi
 source venv/bin/activate
 
 # Run the Flask app
-echo "Starting AMS2 Race Results Web Server..."
-echo "Open http://localhost:5000 in your browser"
 echo ""
-
-python3 app.py
+python3 app.py --port "$PORT" --host "$HOST" $DEBUG

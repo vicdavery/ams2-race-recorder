@@ -72,7 +72,21 @@ cd server
 run.bat
 ```
 
-Access the web server at `http://localhost:5000`
+**Custom Port:**
+```bash
+# Linux/Mac: Run on port 8000
+./run.sh --port 8000
+
+# Windows: Run on port 8000
+run.bat --port 8000
+
+# Localhost only (development)
+./run.sh --host 127.0.0.1
+```
+
+Access the web server at `http://localhost:5000` (or your custom port)
+
+See [server/PORT_CONFIGURATION.md](server/PORT_CONFIGURATION.md) for detailed port configuration options.
 
 ## Database Schema
 

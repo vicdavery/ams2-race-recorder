@@ -5,7 +5,9 @@ Displays race sessions and results from the AMS2 SQLite database
 """
 
 import os
+import sys
 import sqlite3
+import argparse
 from pathlib import Path
 from datetime import datetime
 from flask import Flask, render_template, jsonify, request
@@ -332,8 +334,50 @@ def not_found(error):
     return render_template('404.html'), 404
 
 
-if __name__ == '__main__':
+def main():
+    """Main entry point for the web server"""
+    parser = argparse.ArgumentParser(
+        description='AMS2 Race Results Web Server',
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog='''
+Examples:
+  python app.py                    # Run on default port 5000
+  python app.py --port 8000        # Run on port 8000
+  python app.py -p 3000            # Run on port 3000
+  python app.py --host 127.0.0.1   # Listen only on localhost
+        '''
+    )
+    
+    parser.add_argument(
+        '-p', '--port',
+        type=int,
+        default=5000,
+        help='Port to run the server on (default: 5000)'
+    )
+    
+    parser.add_argument(
+        '--host',
+        type=str,
+        default='0.0.0.0',
+        help='Host address to bind to (default: 0.0.0.0)'
+    )
+    
+    parser.add_argument(
+        '--debug',
+        action='store_true',
+        help='Run in debug mode'
+    )
+    
+    args = parser.parse_args()
+    
     print(f"Database path: {DB_PATH}")
     print(f"Database exists: {DB_PATH.exists()}")
+    print(f"Starting AMS2 Race Results Web Server...")
+    print(f"Listening on http://{args.host}:{args.port}")
+    print(f"Press Ctrl+C to stop\n")
     
-    app.run(debug=True, host='0.0.0.0', port=5000)
+    app.run(debug=args.debug, host=args.host, port=args.port)
+
+
+if __name__ == '__main__':
+    main()
