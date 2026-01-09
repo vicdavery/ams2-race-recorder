@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+
+{% block title %}{{ stats.driver_name }} - Driver Stats{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h2>{{ stats.driver_name }}</h2>
+    <div class="stat-grid">
+        <div class="stat-box">
+            <div class="label">Total Points</div>
+            <div class="value">{{ stats.total_points }}</div>
+        </div>
+        <div class="stat-box">
+            <div class="label">Races</div>
+            <div class="value">{{ stats.races }}</div>
+        </div>
+        <div class="stat-box">
+            <div class="label">Points Finishes</div>
+            <div class="value">{{ stats.points_finishes }}</div>
+        </div>
+        <div class="stat-box">
+            <div class="label">Poles</div>
+            <div class="value">{{ stats.poles }}</div>
+        </div>
+        <div class="stat-box">
+            <div class="label">Fastest Laps</div>
+            <div class="value">{{ stats.fastest_laps }}</div>
+        </div>
+        <div class="stat-box">
+            <div class="label">Avg Finish</div>
+            <div class="value" style="font-size: 18px;">{{ stats.avg_finish }}</div>
+        </div>
+        <div class="stat-box">
+            <div class="label">Best Lap</div>
+            <div class="value" style="font-size: 14px;">{{ stats.best_lap }}</div>
+        </div>
+    </div>
+</div>
+
+{% if races %}
+<div class="card">
+    <h2>Race History</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Session</th>
+                <th>Track</th>
+                <th>Date</th>
+                <th>Position</th>
+                <th>Points</th>
+                <th>Awards</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for race in races %}
+            <tr>
+                <td><a href="/session/{{ race.session_id }}">{{ race.session_type }}</a></td>
+                <td>{{ race.track_name }}</td>
+                <td>{{ race.date_time }}</td>
+                <td>
+                    {% if race.finish_position <= 3 %}
+                        {% if race.finish_position == 1 %}
+                            <span class="badge badge-gold">🥇</span>
+                        {% elif race.finish_position == 2 %}
+                            <span class="badge badge-silver">🥈</span>
+                        {% else %}
+                            <span class="badge badge-bronze">🥉</span>
+                        {% endif %}
+                    {% else %}
+                        {{ race.finish_position }}
+                    {% endif %}
+                </td>
+                <td><strong>{{ race.points }}</strong></td>
+                <td>
+                    {% if race.pole_sitter %}
+                        <span class="badge badge-pole">Pole</span>
+                    {% endif %}
+                    {% if race.fastest_lap %}
+                        <span class="badge badge-fastest">Fastest Lap</span>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endif %}
+
+<div style="text-align: center; margin-top: 20px;">
+    <a href="/" class="btn" style="display: inline-block; padding: 10px 20px; background: #4a90ff; color: white; border-radius: 4px;">← Back to Sessions</a>
+</div>
+{% endblock %}

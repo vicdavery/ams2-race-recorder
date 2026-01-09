@@ -1,0 +1,30 @@
+build/
+*.db
+*.o
+*.obj
+.vs/
+Debug/
+Release/
+*.exe
+*.dll
+*.so
+.DS_Store
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+
+# Python
+server/venv/
+server/__pycache__/
+server/*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
