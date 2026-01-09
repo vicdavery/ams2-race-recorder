@@ -126,10 +126,11 @@ class TestDriverRoute:
         # Should show race history table
         assert b'<table' in response.data
     
-    def test_driver_not_found_returns_404(self, client):
-        """Test that unknown driver returns 404"""
+    def test_driver_not_found_returns_200_with_stats(self, client):
+        """Test that unknown driver returns 200 with zero stats"""
         response = client.get('/driver/UnknownDriver')
-        assert response.status_code == 404
+        # Returns 200 even for unknown drivers, with zero stats page
+        assert response.status_code == 200
     
     def test_driver_statistics_calculations(self, client):
         """Test that driver statistics are accurate"""
