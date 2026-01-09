@@ -139,6 +139,30 @@ See [WINDOWS_BUILD.md](WINDOWS_BUILD.md) for detailed Windows setup instructions
    ```
 5. Open http://localhost:5000
 
+## Testing
+
+The web server includes comprehensive test coverage (55 tests) with test data and fixtures.
+
+**Run tests on Windows:**
+```bash
+cd server
+run_tests.bat
+```
+
+**Run tests on Linux/Mac:**
+```bash
+cd server
+bash run_tests.sh
+```
+
+**Test coverage includes:**
+- 15 route tests (page rendering and navigation)
+- 22 API endpoint tests (REST endpoints)
+- 18 database operation tests
+- Integration and data integrity tests
+
+See [server/TESTING.md](server/TESTING.md) for detailed testing guide and [server/TEST_DATA.md](server/TEST_DATA.md) for test data reference.
+
 ## Workflow
 
 1. **During Race:**
