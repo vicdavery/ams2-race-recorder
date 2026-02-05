@@ -25,7 +25,7 @@ add_executable(ams2_recorder
 
 # Link libraries
 target_link_libraries(ams2_recorder
-    SQLite3::SQLite3
+    SQLite::SQLite3
 )
 
 # Include directories
